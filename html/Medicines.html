@@ -562,12 +562,16 @@
         loadMedicines();
         
         function loadMedicines() {
+            console.log('Loading medicines...');
             google.script.run
                 .withSuccessHandler(function(data) {
+                    console.log('Received data:', data);
+                    console.log('Data length:', data.length);
                     medicines = data;
                     renderMedicinesTable(data);
                 })
                 .withFailureHandler(function(error) {
+                    console.error('Error loading medicines:', error);
                     showError('Error loading medicines: ' + error.message);
                 })
                 .getAllMedicines();
