@@ -1,0 +1,34 @@
+# VetCare Plus - Git Ignore File
+
+# Sensitive configuration
+config.local.js
+secrets.json
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Node modules (if you add build tools later)
+node_modules/
+package-lock.json
+
+# Build outputs (if you add build tools later)
+dist/
+build/

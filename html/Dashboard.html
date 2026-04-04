@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - VetCare Plus</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --light-bg: #f8fafc;
+            --border-color: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--light-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            width: 100%;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 8px var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .navbar-brand .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .brand-icon {
+            font-size: 1.5rem;
+        }
+
+        .navbar-menu {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s;
+            font-size: 1rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .nav-link.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem 0;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .page-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .welcome-text {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1rem 1.25rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px var(--shadow-lg);
+        }
+
+        .stat-card.success .stat-value {
+            color: var(--success-color);
+        }
+
+        .stat-card.warning .stat-value {
+            color: var(--warning-color);
+        }
+
+        .stat-card.danger .stat-value {
+            color: var(--danger-color);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+        }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Action Cards */
+        .action-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid var(--border-color);
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px var(--shadow-lg);
+        }
+
+        .action-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .action-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .action-description {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        .footer {
+            background: white;
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 0;
+            margin-top: auto;
+        }
+
+        .footer p {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .navbar .container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .navbar-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <a href="?page=dashboard" class="brand-link">
+                    <span class="brand-icon">💊</span>
+                    <span class="brand-text">VetCare Plus</span>
+                </a>
+            </div>
+            <div class="navbar-menu">
+                <a href="?page=dashboard" class="nav-link active">Dashboard</a>
+                <a href="?page=medicines" class="nav-link">Medicines</a>
+                <a href="?page=sales" class="nav-link">Sales</a>
+                <a href="?page=vaccinations" class="nav-link">Vaccinations</a>
+                <button onclick="handleLogout()" class="nav-link">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Dashboard</h1>
+                <div class="header-actions">
+                    <span class="welcome-text">Welcome back! 👋</span>
+                </div>
+            </div>
+
+            <!-- Statistics Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📦</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalMedicines">0</div>
+                        <div class="stat-label">Total Medicines</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card warning">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="lowStockCount">0</div>
+                        <div class="stat-label">Low Stock</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card danger">
+                    <div class="stat-icon">⏰</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="expiredCount">0</div>
+                        <div class="stat-label">Expired</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card warning">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="expiringSoonCount">0</div>
+                        <div class="stat-label">Expiring Soon</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales & Vaccinations Stats -->
+            <div class="stats-grid" style="margin-top: 1.5rem;">
+                <div class="stat-card success">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalRevenue">₹0.00</div>
+                        <div class="stat-label">Total Revenue</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">🧾</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalSales">0</div>
+                        <div class="stat-label">Total Sales</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">💉</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalVaccinations">0</div>
+                        <div class="stat-label">Vaccinations</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions" style="margin-top: 2rem;">
+                <h2 style="margin-bottom: 1rem; color: var(--text-primary);">Quick Actions</h2>
+                <div class="stats-grid">
+                    <a href="?page=medicines" class="action-card">
+                        <div class="action-icon">📋</div>
+                        <div class="action-title">View Medicines</div>
+                        <div class="action-description">Manage inventory</div>
+                    </a>
+                    
+                    <a href="?page=sales" class="action-card">
+                        <div class="action-icon">🛒</div>
+                        <div class="action-title">Create Sale</div>
+                        <div class="action-description">New billing</div>
+                    </a>
+                    
+                    <a href="?page=vaccinations" class="action-card">
+                        <div class="action-icon">💉</div>
+                        <div class="action-title">Vaccinations</div>
+                        <div class="action-description">Track pet vaccines</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 VetCare Plus System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Store the web app URL globally
+        var webAppUrl = '';
+        
+        // Get web app URL on page load
+        google.script.run
+            .withSuccessHandler(function(url) {
+                webAppUrl = url;
+                console.log('Web App URL:', webAppUrl);
+            })
+            .withFailureHandler(function(error) {
+                console.error('Error getting web app URL:', error);
+            })
+            .getWebAppUrl();
+        
+        // Load dashboard data
+        google.script.run
+            .withSuccessHandler(function(data) {
+                document.getElementById('totalMedicines').textContent = data.totalMedicines;
+                document.getElementById('lowStockCount').textContent = data.lowStockCount;
+                document.getElementById('expiredCount').textContent = data.expiredCount;
+                document.getElementById('expiringSoonCount').textContent = data.expiringSoonCount;
+                document.getElementById('totalRevenue').textContent = '₹' + data.totalRevenue.toFixed(2);
+                document.getElementById('totalSales').textContent = data.totalSales;
+                document.getElementById('totalVaccinations').textContent = data.totalVaccinations;
+            })
+            .withFailureHandler(function(error) {
+                console.error('Error loading dashboard data:', error);
+            })
+            .getDashboardData();
+        
+        // Navigation helper function
+        function navigateTo(page) {
+            if (webAppUrl) {
+                window.top.location.href = webAppUrl + '?page=' + page;
+            } else {
+                // Fallback to relative URL
+                window.top.location.href = '?page=' + page;
+            }
+        }
+        
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                google.script.run
+                    .withSuccessHandler(function() {
+                        navigateTo('login');
+                    })
+                    .logout();
+            }
+        }
+        
+        // Update all navigation links to use the navigateTo function
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update all nav links
+            document.querySelectorAll('.nav-link[href^="?page="]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var page = this.getAttribute('href').replace('?page=', '');
+                    navigateTo(page);
+                });
+            });
+            
+            // Update all action cards
+            document.querySelectorAll('.action-card[href^="?page="]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var page = this.getAttribute('href').replace('?page=', '');
+                    navigateTo(page);
+                });
+            });
+            
+            // Update brand link
+            document.querySelectorAll('.brand-link[href^="?page="]').forEach(function(link) {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    var page = this.getAttribute('href').replace('?page=', '');
+                    navigateTo(page);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
