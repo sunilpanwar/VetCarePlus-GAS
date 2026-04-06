@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - VetCare Plus</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1rem;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .login-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-subtitle {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .login-form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .login-form-group label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+            font-size: 0.875rem;
+        }
+
+        .login-input {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .login-button {
+            padding: 0.875rem;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .login-button:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .login-alert {
+            padding: 0.875rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.25rem;
+            font-size: 0.875rem;
+        }
+
+        .login-alert-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        .login-alert-success {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .login-footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+
+        .default-credentials {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #f0f9ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.5rem;
+        }
+
+        .default-credentials-title {
+            font-weight: 600;
+            color: #1e40af;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .default-credentials-text {
+            color: #1e40af;
+            font-size: 0.75rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-icon">💊</div>
+                <h1 class="login-title">VetCare Plus</h1>
+                <p class="login-subtitle">Management System</p>
+            </div>
+
+            <!-- Flash Messages -->
+            <div id="errorMessage" class="login-alert login-alert-error" style="display: none;"></div>
+            <div id="successMessage" class="login-alert login-alert-success" style="display: none;"></div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="login-form">
+                <div class="login-form-group">
+                    <label for="username">Username</label>
+                    <input type="text" 
+                           id="username" 
+                           name="username" 
+                           class="login-input" 
+                           placeholder="Enter your username"
+                           required>
+                </div>
+
+                <div class="login-form-group">
+                    <label for="password">Password</label>
+                    <input type="password" 
+                           id="password" 
+                           name="password" 
+                           class="login-input" 
+                           placeholder="Enter your password"
+                           required>
+                </div>
+
+                <button type="submit" class="login-button" id="loginBtn">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Default Credentials Info -->
+            <div class="default-credentials">
+                <div class="default-credentials-title">📝 Default Login Credentials</div>
+                <div class="default-credentials-text">
+                    <strong>Username:</strong> admin<br>
+                    <strong>Password:</strong> admin123
+                </div>
+            </div>
+
+            <div class="login-footer">
+                <p>&copy; 2024 VetCare Plus System</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load config -->
+    <script src="config.js"></script>
+    
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            
+            // Disable button and show loading
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Signing in...';
+            
+            // Hide previous messages
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
+            
+            try {
+                // Call API using fetch
+                const response = await callAPI('login', { username, password });
+                
+                if (response.success) {
+                    // Store user info in sessionStorage
+                    sessionStorage.setItem('user', JSON.stringify(response.user));
+                    sessionStorage.setItem('authenticated', 'true');
+                    
+                    // Show success message
+                    document.getElementById('successMessage').textContent = response.message;
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Navigate to dashboard
+                    setTimeout(() => {
+                        window.location.href = 'Dashboard.html';
+                    }, 500);
+                } else {
+                    document.getElementById('errorMessage').textContent = response.message;
+                    document.getElementById('errorMessage').style.display = 'block';
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Sign In';
+                }
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = 'Login failed: ' + error.message;
+                document.getElementById('errorMessage').style.display = 'block';
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Sign In';
+            }
+        });
+    </script>
+</body>
+</html>
