@@ -437,10 +437,9 @@
                         document.getElementById('successMessage').textContent = response.message;
                         document.getElementById('successMessage').style.display = 'block';
                         
-                        // Get the current script URL and construct dashboard URL
+                        // Construct the dashboard URL using window.location
                         // This preserves the user gesture for navigation
-                        var scriptUrl = google.script.url.getLocation();
-                        var baseUrl = scriptUrl.protocol + '//' + scriptUrl.host + scriptUrl.pathname;
+                        var baseUrl = window.location.origin + window.location.pathname;
                         
                         // Navigate immediately to preserve user gesture
                         window.top.location.href = baseUrl + '?page=dashboard';
