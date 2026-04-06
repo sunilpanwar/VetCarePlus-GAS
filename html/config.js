@@ -1,6 +1,6 @@
 // Google Apps Script Web App Configuration
 // Replace this URL with your deployed Google Apps Script web app URL
-const API_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbwYOURwlppGODzOTMQ2hpQTNoVs-vVwzzSdIppf_mN1r1B_kbqLRoW65jP0WDaGDrJ3eQ/exec';
 
 // API endpoints
 const API = {
