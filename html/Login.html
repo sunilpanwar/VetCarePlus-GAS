@@ -436,21 +436,19 @@
                         document.getElementById('successMessage').textContent = response.message;
                         document.getElementById('successMessage').style.display = 'block';
                         
-                        // Redirect to dashboard - use parent window location
+                        // Redirect to dashboard using server-provided URL
                         setTimeout(function() {
-                            // Try multiple navigation methods for compatibility
-                            try {
-                                // Method 1: Try parent window (works in most cases)
-                                if (window.parent && window.parent !== window) {
-                                    window.parent.location.href = window.parent.location.origin + window.parent.location.pathname + '?page=dashboard';
-                                } else {
-                                    // Method 2: Use current window location
-                                    window.location.href = window.location.origin + window.location.pathname + '?page=dashboard';
-                                }
-                            } catch (e) {
-                                // Method 3: Fallback to simple relative URL
-                                window.location.href = '?page=dashboard';
-                            }
+                            google.script.run
+                                .withSuccessHandler(function(webAppUrl) {
+                                    // Use the deployment URL from server
+                                    window.top.location.href = webAppUrl + '?page=dashboard';
+                                })
+                                .withFailureHandler(function(error) {
+                                    // Fallback: try relative navigation
+                                    console.error('Error getting web app URL:', error);
+                                    window.top.location.href = '?page=dashboard';
+                                })
+                                .getWebAppUrl();
                         }, 1000);
                     } else {
                         document.getElementById('errorMessage').textContent = response.message;

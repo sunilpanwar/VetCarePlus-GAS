@@ -937,16 +937,11 @@
         
         // Navigation helper function
         function navigateTo(page) {
-            try {
-                // Try multiple navigation methods for compatibility
-                if (window.parent && window.parent !== window) {
-                    window.parent.location.href = window.parent.location.origin + window.parent.location.pathname + '?page=' + page;
-                } else {
-                    window.location.href = window.location.origin + window.location.pathname + '?page=' + page;
-                }
-            } catch (e) {
-                // Fallback to simple relative URL
-                window.location.href = '?page=' + page;
+            if (webAppUrl) {
+                window.top.location.href = webAppUrl + '?page=' + page;
+            } else {
+                // Fallback to relative URL
+                window.top.location.href = '?page=' + page;
             }
         }
         
