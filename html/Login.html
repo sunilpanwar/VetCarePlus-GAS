@@ -433,23 +433,17 @@
             google.script.run
                 .withSuccessHandler(function(response) {
                     if (response.success) {
+                        // Show success message
                         document.getElementById('successMessage').textContent = response.message;
                         document.getElementById('successMessage').style.display = 'block';
                         
-                        // Redirect to dashboard using server-provided URL
-                        setTimeout(function() {
-                            google.script.run
-                                .withSuccessHandler(function(webAppUrl) {
-                                    // Use the deployment URL from server
-                                    window.top.location.href = webAppUrl + '?page=dashboard';
-                                })
-                                .withFailureHandler(function(error) {
-                                    // Fallback: try relative navigation
-                                    console.error('Error getting web app URL:', error);
-                                    window.top.location.href = '?page=dashboard';
-                                })
-                                .getWebAppUrl();
-                        }, 1000);
+                        // Get the current script URL and construct dashboard URL
+                        // This preserves the user gesture for navigation
+                        var scriptUrl = google.script.url.getLocation();
+                        var baseUrl = scriptUrl.protocol + '//' + scriptUrl.host + scriptUrl.pathname;
+                        
+                        // Navigate immediately to preserve user gesture
+                        window.top.location.href = baseUrl + '?page=dashboard';
                     } else {
                         document.getElementById('errorMessage').textContent = response.message;
                         document.getElementById('errorMessage').style.display = 'block';
