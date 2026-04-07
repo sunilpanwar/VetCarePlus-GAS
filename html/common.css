@@ -514,6 +514,67 @@ body {
     animation: slideIn 0.3s ease-out;
 }
 
+/* Floating Action Button (FAB) */
+.fab {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.fab:hover {
+    background-color: var(--primary-hover);
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
+}
+
+.fab:active {
+    transform: scale(0.95);
+}
+
+/* Filter Buttons */
+.filter-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    background: white;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.875rem;
+    min-height: 44px;
+}
+
+.filter-btn:hover {
+    background-color: var(--light-bg);
+    border-color: var(--primary-color);
+}
+
+.filter-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    font-weight: 600;
+}
+
 /* Mobile Responsive Styles */
 @media (max-width: 768px) {
     .container {
@@ -645,7 +706,7 @@ body {
     }
 }
 
-/* Extra small devices - Compact Cards */
+/* Extra small devices - Horizontal Scrolling Table */
 @media (max-width: 480px) {
     body {
         font-size: 14px;
@@ -663,52 +724,51 @@ body {
         font-size: 1.25rem;
     }
     
-    /* Compact card-style table for very small screens */
-    .medicine-table thead {
-        display: none;
+    /* Keep table layout but make it scrollable horizontally */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 0.5rem;
     }
     
-    .medicine-table tbody tr {
-        display: block;
-        margin-bottom: 0.5rem;
-        border: 1px solid var(--border-color);
-        border-radius: 0.375rem;
-        padding: 0.5rem;
-        background: white;
-    }
-    
-    .medicine-table tbody td {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.25rem 0;
-        border-bottom: 1px solid #f1f5f9;
+    .medicine-table {
+        min-width: 100%;
         font-size: 0.75rem;
     }
     
-    .medicine-table tbody td:last-child {
-        border-bottom: none;
+    .medicine-table th,
+    .medicine-table td {
+        padding: 0.5rem 0.375rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
     }
     
-    .medicine-table tbody td:before {
-        content: attr(data-label);
-        font-weight: 600;
-        color: var(--text-secondary);
+    .medicine-table th {
         font-size: 0.7rem;
-        flex-shrink: 0;
-        margin-right: 0.5rem;
+        position: sticky;
+        top: 0;
+        background-color: var(--light-bg);
+        z-index: 10;
     }
     
     /* Compact action buttons */
     .action-buttons {
         gap: 0.25rem;
+        flex-wrap: nowrap;
     }
     
     .btn-icon {
-        font-size: 1.125rem;
+        font-size: 1rem;
         padding: 0.25rem;
-        min-width: 36px;
-        min-height: 36px;
+        min-width: 32px;
+        min-height: 32px;
+    }
+    
+    /* Make badges more compact */
+    .quantity-badge,
+    .badge-secondary {
+        padding: 0.125rem 0.375rem;
+        font-size: 0.65rem;
     }
     
     .modal-content,
@@ -796,6 +856,26 @@ body {
         width: 100%;
         justify-content: center;
         margin-top: 0.5rem;
+    }
+    
+    /* FAB on mobile */
+    .fab {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 56px;
+        height: 56px;
+    }
+    
+    /* Filter buttons on mobile */
+    .filter-buttons {
+        gap: 0.375rem;
+    }
+    
+    .filter-btn {
+        flex: 1;
+        min-width: 100px;
+        font-size: 0.8125rem;
+        padding: 0.625rem 0.75rem;
     }
 }
 

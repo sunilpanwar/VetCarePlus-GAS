@@ -45,9 +45,19 @@
             <!-- Page Header -->
             <div class="page-header">
                 <h1>Pet Vaccinations</h1>
-                <div class="header-actions">
-                    <button onclick="showAddVaccinationModal()" class="btn btn-primary">+ Add Vaccination Record</button>
-                </div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="filter-buttons" style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button onclick="filterVaccinations('overdue')" id="filterOverdue" class="btn btn-outline filter-btn active">
+                    ⚠️ Overdue
+                </button>
+                <button onclick="filterVaccinations('upcoming')" id="filterUpcoming" class="btn btn-outline filter-btn">
+                    📅 Upcoming
+                </button>
+                <button onclick="filterVaccinations('all')" id="filterAll" class="btn btn-outline filter-btn">
+                    📋 All Records
+                </button>
             </div>
 
             <!-- Vaccinations Table -->
@@ -178,6 +188,11 @@
         </div>
     </div>
 
+    <!-- Floating Action Button (FAB) -->
+    <button onclick="showAddVaccinationModal()" class="fab" title="Add Vaccination Record">
+        <span style="font-size: 1.5rem;">+</span>
+    </button>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -194,6 +209,7 @@
         checkAuthentication();
 
         let vaccinations = [];
+        let currentFilter = 'overdue'; // Default filter
         
         // Load vaccinations on page load
         loadVaccinations();
@@ -203,13 +219,49 @@
                 const response = await callAPI('getAllVaccinations');
                 if (response.success) {
                     vaccinations = response.data;
-                    renderVaccinationsTable(response.data);
+                    // Apply default filter (overdue)
+                    filterVaccinations(currentFilter);
                 } else {
                     showError('Error loading vaccinations: ' + response.message);
                 }
             } catch (error) {
                 showError('Error loading vaccinations: ' + error.message);
             }
+        }
+        
+        function filterVaccinations(filter) {
+            currentFilter = filter;
+            
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('filter' + filter.charAt(0).toUpperCase() + filter.slice(1)).classList.add('active');
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            let filteredData = vaccinations;
+            
+            if (filter === 'overdue') {
+                // Show only overdue vaccinations (next due date < today)
+                filteredData = vaccinations.filter(v => {
+                    const dueDate = new Date(v.nextDueDate);
+                    dueDate.setHours(0, 0, 0, 0);
+                    return dueDate < today;
+                });
+            } else if (filter === 'upcoming') {
+                // Show upcoming vaccinations (next due date >= today and within 30 days)
+                const thirtyDaysFromNow = new Date(today);
+                thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
+                
+                filteredData = vaccinations.filter(v => {
+                    const dueDate = new Date(v.nextDueDate);
+                    dueDate.setHours(0, 0, 0, 0);
+                    return dueDate >= today && dueDate <= thirtyDaysFromNow;
+                });
+            }
+            // 'all' shows everything (no filter)
+            
+            renderVaccinationsTable(filteredData);
         }
         
         function renderVaccinationsTable(data) {
