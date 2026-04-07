@@ -12,6 +12,7 @@ async function callAPI(action, data = {}) {
         });
         
         const url = `${API_URL}?${params.toString()}`;
+        console.log('API Call:', action, 'URL:', url);
         
         // Use GET request to avoid CORS issues
         const response = await fetch(url, {
@@ -20,10 +21,20 @@ async function callAPI(action, data = {}) {
         });
         
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
         }
         
-        return await response.json();
+        // Get response text first to check if it's valid JSON
+        const responseText = await response.text();
+        console.log('API Response:', responseText);
+        
+        // Try to parse as JSON
+        try {
+            return JSON.parse(responseText);
+        } catch (parseError) {
+            console.error('Failed to parse JSON response:', responseText);
+            throw new Error('Invalid JSON response from server. Response: ' + responseText.substring(0, 200));
+        }
     } catch (error) {
         console.error('API call failed:', error);
         throw error;
