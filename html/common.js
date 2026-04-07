@@ -266,6 +266,38 @@ function initTooltips() {
     });
 }
 
+// Toggle mobile menu
+function toggleMobileMenu() {
+    const navbarMenu = document.querySelector('.navbar-menu');
+    const navbarToggle = document.querySelector('.navbar-toggle');
+    
+    if (navbarMenu && navbarToggle) {
+        navbarMenu.classList.toggle('active');
+        navbarToggle.classList.toggle('active');
+    }
+}
+
+// Close mobile menu when clicking on a nav link
+function closeMobileMenuOnClick() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            const navbarMenu = document.querySelector('.navbar-menu');
+            const navbarToggle = document.querySelector('.navbar-toggle');
+            
+            if (navbarMenu && navbarToggle) {
+                navbarMenu.classList.remove('active');
+                navbarToggle.classList.remove('active');
+            }
+        });
+    });
+}
+
+// Initialize mobile menu on page load
+document.addEventListener('DOMContentLoaded', function() {
+    closeMobileMenuOnClick();
+});
+
 // Export functions for use in other scripts
 window.showAlert = showAlert;
 window.showConfirm = showConfirm;
@@ -283,3 +315,4 @@ window.debounce = debounce;
 window.setButtonLoading = setButtonLoading;
 window.validateForm = validateForm;
 window.initTooltips = initTooltips;
+window.toggleMobileMenu = toggleMobileMenu;

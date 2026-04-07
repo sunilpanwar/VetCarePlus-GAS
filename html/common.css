@@ -69,6 +69,44 @@ body {
     font-size: 1.5rem;
 }
 
+/* Hamburger Menu Button */
+.navbar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 101;
+}
+
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 24px;
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    background-color: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Hamburger animation when active */
+.navbar-toggle.active .hamburger span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+
+.navbar-toggle.active .hamburger span:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar-toggle.active .hamburger span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
 .navbar-menu {
     display: flex;
     gap: 1rem;
@@ -483,24 +521,51 @@ body {
     }
     
     .navbar .container {
-        flex-direction: column;
-        gap: 0.75rem;
+        flex-direction: row;
         padding: 0.75rem;
     }
     
+    /* Show hamburger menu on mobile */
+    .navbar-toggle {
+        display: block;
+    }
+    
+    /* Hide menu by default on mobile */
     .navbar-menu {
-        flex-wrap: wrap;
-        justify-content: center;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
         width: 100%;
-        gap: 0.5rem;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: none;
+        gap: 0;
+    }
+    
+    /* Show menu when active */
+    .navbar-menu.active {
+        max-height: 500px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-top: 1px solid var(--border-color);
     }
     
     .nav-link {
-        padding: 0.625rem 1rem;
+        padding: 1rem 1.5rem;
         font-size: 0.875rem;
         min-height: 44px;
         display: flex;
         align-items: center;
+        width: 100%;
+        border-radius: 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .nav-link:last-child {
+        border-bottom: none;
     }
     
     .page-header {
