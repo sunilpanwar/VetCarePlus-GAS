@@ -628,7 +628,6 @@
             e.preventDefault();
             
             const vaccinationData = {
-                id: document.getElementById('vaccinationId').value || null,
                 petName: document.getElementById('petName').value,
                 petType: document.getElementById('petType').value,
                 ownerName: document.getElementById('ownerName').value,
@@ -640,6 +639,12 @@
                 veterinarian: document.getElementById('veterinarian').value,
                 notes: document.getElementById('notes').value
             };
+            
+            // Only add id if it exists (for updates)
+            const idValue = document.getElementById('vaccinationId').value;
+            if (idValue && idValue !== '' && idValue !== 'null') {
+                vaccinationData.id = idValue;
+            }
             
             try {
                 const response = await callAPI('saveVaccination', vaccinationData);
