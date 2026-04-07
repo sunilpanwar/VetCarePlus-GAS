@@ -1,6 +1,6 @@
 // Google Apps Script Web App Configuration
 // Replace this URL with your deployed Google Apps Script web app URL
-const API_URL = 'https://script.google.com/macros/s/AKfycbxReesP2kXjKU5P9jbLIcRsOmDb1EXnB6RmFaS3fwtjODxy4spxF3VJgF6zNxGRybxvBQ/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbz1SZ3KVEDJyhLFD2lovkWPn5Itj165-BMrwqBptB9EbILo61pBCq9V06wSZ7iOU5o7pA/exec';
 
 // Helper function to call API using GET requests (avoids CORS issues)
 async function callAPI(action, data = {}) {

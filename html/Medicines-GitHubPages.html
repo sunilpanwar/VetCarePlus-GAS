@@ -692,7 +692,6 @@
             e.preventDefault();
             
             const medicineData = {
-                id: document.getElementById('medicineId').value || null,
                 barcode: document.getElementById('barcode').value,
                 name: document.getElementById('name').value,
                 manufacturer: document.getElementById('manufacturer').value,
@@ -706,6 +705,12 @@
                 expiryDate: document.getElementById('expiryDate').value,
                 description: document.getElementById('description').value
             };
+            
+            // Only add id if it exists (for updates)
+            const idValue = document.getElementById('medicineId').value;
+            if (idValue && idValue !== '' && idValue !== 'null') {
+                medicineData.id = idValue;
+            }
             
             try {
                 const response = await callAPI('saveMedicine', medicineData);
