@@ -2,33 +2,21 @@
 // Replace this URL with your deployed Google Apps Script web app URL
 const API_URL = 'https://script.google.com/macros/s/AKfycbxWvnpxL5cZbsJjNQx-N5S1ZHDR9wJkyn5u9OpaBYx6B8tgq_BE0dioHb2QpN_xX6Ov4A/exec';
 
-// API endpoints
-const API = {
-    login: API_URL + '?action=login',
-    logout: API_URL + '?action=logout',
-    getDashboardData: API_URL + '?action=getDashboardData',
-    getAllMedicines: API_URL + '?action=getAllMedicines',
-    saveMedicine: API_URL + '?action=saveMedicine',
-    deleteMedicine: API_URL + '?action=deleteMedicine',
-    getAllSales: API_URL + '?action=getAllSales',
-    createSale: API_URL + '?action=createSale',
-    getAllVaccinations: API_URL + '?action=getAllVaccinations',
-    saveVaccination: API_URL + '?action=saveVaccination'
-};
-
-// Helper function to call API
+// Helper function to call API using GET requests (avoids CORS issues)
 async function callAPI(action, data = {}) {
     try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                action: action,
-                data: data
-            })
+        // Build URL with parameters
+        const params = new URLSearchParams({
+            action: action,
+            ...data
+        });
+        
+        const url = `${API_URL}?${params.toString()}`;
+        
+        // Use GET request to avoid CORS issues
+        const response = await fetch(url, {
+            method: 'GET',
+            redirect: 'follow'
         });
         
         if (!response.ok) {
@@ -41,3 +29,6 @@ async function callAPI(action, data = {}) {
         throw error;
     }
 }
+
+// Make API_URL available globally
+window.API_URL = API_URL;
