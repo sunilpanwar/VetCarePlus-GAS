@@ -147,11 +147,11 @@ async function handleLogout() {
             try {
                 await callAPI('logout');
                 sessionStorage.clear();
-                window.location.href = 'Login-GitHubPages.html';
+                window.location.href = 'Login.html';
             } catch (error) {
                 console.error('Logout error:', error);
                 sessionStorage.clear();
-                window.location.href = 'Login-GitHubPages.html';
+                window.location.href = 'Login.html';
             }
         }
     );
@@ -180,7 +180,7 @@ function showError(message) {
 // Check authentication on page load
 function checkAuthentication() {
     if (!sessionStorage.getItem('authenticated')) {
-        window.location.href = 'Login-GitHubPages.html';
+        window.location.href = 'Login.html';
     }
 }
 
@@ -298,6 +298,109 @@ document.addEventListener('DOMContentLoaded', function() {
     closeMobileMenuOnClick();
 });
 
+// Pagination Helper Class
+class Paginator {
+    constructor(items, itemsPerPage = 10) {
+        this.allItems = items;
+        this.itemsPerPage = itemsPerPage;
+        this.currentPage = 1;
+        this.totalPages = Math.ceil(items.length / itemsPerPage);
+    }
+
+    getCurrentPageItems() {
+        const start = (this.currentPage - 1) * this.itemsPerPage;
+        const end = start + this.itemsPerPage;
+        return this.allItems.slice(start, end);
+    }
+
+    goToPage(page) {
+        if (page >= 1 && page <= this.totalPages) {
+            this.currentPage = page;
+            return true;
+        }
+        return false;
+    }
+
+    nextPage() {
+        return this.goToPage(this.currentPage + 1);
+    }
+
+    prevPage() {
+        return this.goToPage(this.currentPage - 1);
+    }
+
+    setItemsPerPage(count) {
+        this.itemsPerPage = count;
+        this.totalPages = Math.ceil(this.allItems.length / count);
+        this.currentPage = 1;
+    }
+
+    updateItems(items) {
+        this.allItems = items;
+        this.totalPages = Math.ceil(items.length / this.itemsPerPage);
+        this.currentPage = 1;
+    }
+
+    getInfo() {
+        const start = (this.currentPage - 1) * this.itemsPerPage + 1;
+        const end = Math.min(start + this.itemsPerPage - 1, this.allItems.length);
+        return {
+            currentPage: this.currentPage,
+            totalPages: this.totalPages,
+            totalItems: this.allItems.length,
+            start: start,
+            end: end,
+            hasNext: this.currentPage < this.totalPages,
+            hasPrev: this.currentPage > 1
+        };
+    }
+}
+
+// Create pagination controls HTML
+function createPaginationControls(paginator, onPageChange) {
+    const info = paginator.getInfo();
+    
+    return `
+        <div class="pagination">
+            <div class="pagination-info">
+                Showing ${info.start}-${info.end} of ${info.totalItems} records
+            </div>
+            <button class="pagination-btn"
+                    onclick="${onPageChange}('first')"
+                    ${!info.hasPrev ? 'disabled' : ''}>
+                ⏮️ First
+            </button>
+            <button class="pagination-btn"
+                    onclick="${onPageChange}('prev')"
+                    ${!info.hasPrev ? 'disabled' : ''}>
+                ◀️ Prev
+            </button>
+            <span style="padding: 0 0.5rem; font-size: 0.875rem;">
+                Page ${info.currentPage} of ${info.totalPages}
+            </span>
+            <button class="pagination-btn"
+                    onclick="${onPageChange}('next')"
+                    ${!info.hasNext ? 'disabled' : ''}>
+                Next ▶️
+            </button>
+            <button class="pagination-btn"
+                    onclick="${onPageChange}('last')"
+                    ${!info.hasNext ? 'disabled' : ''}>
+                Last ⏭️
+            </button>
+            <div class="page-size-selector">
+                <label for="pageSize">Per page:</label>
+                <select id="pageSize" onchange="${onPageChange}('size', this.value)">
+                    <option value="10" ${info.itemsPerPage === 10 ? 'selected' : ''}>10</option>
+                    <option value="20" ${info.itemsPerPage === 20 ? 'selected' : ''}>20</option>
+                    <option value="50" ${info.itemsPerPage === 50 ? 'selected' : ''}>50</option>
+                    <option value="100" ${info.itemsPerPage === 100 ? 'selected' : ''}>100</option>
+                </select>
+            </div>
+        </div>
+    `;
+}
+
 // Export functions for use in other scripts
 window.showAlert = showAlert;
 window.showConfirm = showConfirm;
@@ -316,3 +419,5 @@ window.setButtonLoading = setButtonLoading;
 window.validateForm = validateForm;
 window.initTooltips = initTooltips;
 window.toggleMobileMenu = toggleMobileMenu;
+window.Paginator = Paginator;
+window.createPaginationControls = createPaginationControls;

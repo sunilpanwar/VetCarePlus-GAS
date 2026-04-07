@@ -1,581 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="config.js"></script>
-    <base target="_top">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sales - VetCare Plus</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-color: #2563eb;
-            --primary-hover: #1d4ed8;
-            --secondary-color: #64748b;
-            --success-color: #10b981;
-            --warning-color: #f59e0b;
-            --danger-color: #ef4444;
-            --light-bg: #f8fafc;
-            --border-color: #e2e8f0;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background-color: var(--light-bg);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            width: 100%;
-        }
-
-        /* Navbar */
-        .navbar {
-            background: white;
-            box-shadow: 0 2px 8px var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .navbar .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        .navbar-brand .brand-link {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            color: var(--text-primary);
-            font-size: 1.25rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .brand-icon {
-            font-size: 1.5rem;
-        }
-
-        .navbar-menu {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: var(--text-secondary);
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            transition: all 0.2s;
-            font-size: 1rem;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
-        }
-
-        .nav-link:hover {
-            background-color: rgba(37, 99, 235, 0.1);
-        }
-
-        .nav-link.active {
-            background-color: var(--primary-color);
-            color: white;
-            font-weight: 600;
-        }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 1.5rem 0;
-        }
-
-        .page-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .page-header h1 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        /* Alerts */
-        .alert {
-            padding: 0.875rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-            font-size: 0.875rem;
-        }
-
-        .alert-success {
-            background-color: #d1fae5;
-            color: #065f46;
-            border: 1px solid #10b981;
-        }
-
-        .alert-error {
-            background-color: #fee2e2;
-            color: #991b1b;
-            border: 1px solid #ef4444;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 0.625rem 1.25rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            font-family: inherit;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--primary-hover);
-        }
-
-        .btn-secondary {
-            background-color: var(--secondary-color);
-            color: white;
-        }
-
-        .btn-icon {
-            background: none;
-            border: none;
-            font-size: 1.25rem;
-            cursor: pointer;
-            padding: 0.25rem;
-            transition: transform 0.2s;
-        }
-
-        .btn-icon:hover {
-            transform: scale(1.2);
-        }
-
-        /* Table */
-        .table-container {
-            background: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 8px var(--shadow);
-            overflow-x: auto;
-        }
-
-        .medicine-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .medicine-table th,
-        .medicine-table td {
-            padding: 0.875rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .medicine-table th {
-            background-color: var(--light-bg);
-            font-weight: 600;
-            color: var(--text-primary);
-            font-size: 0.875rem;
-        }
-
-        .medicine-table td {
-            font-size: 0.875rem;
-        }
-
-        .medicine-table tbody tr:hover {
-            background-color: var(--light-bg);
-        }
-
-        .no-data {
-            text-align: center;
-            color: var(--text-secondary);
-            padding: 2rem !important;
-        }
-
-        .badge-secondary {
-            padding: 0.25rem 0.625rem;
-            border-radius: 0.25rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            background-color: #e2e8f0;
-            color: #475569;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 0.5rem;
-            width: 90%;
-            max-width: 900px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .modal-header h2 {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-secondary);
-        }
-
-        .modal-body {
-            padding: 1.5rem;
-        }
-
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.5rem;
-            padding-top: 1rem;
-        }
-
-        .form-section {
-            margin-bottom: 1.5rem;
-        }
-
-        .section-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
-            border-bottom: 2px solid var(--border-color);
-            padding-bottom: 0.5rem;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group label {
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-            font-size: 0.875rem;
-        }
-
-        .form-control {
-            padding: 0.625rem;
-            border: 1px solid var(--border-color);
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-        }
-
-        .required {
-            color: var(--danger-color);
-        }
-
-        /* Footer */
-        .footer {
-            background: white;
-            border-top: 1px solid var(--border-color);
-            padding: 1.5rem 0;
-            margin-top: auto;
-        }
-
-        .footer p {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-        }
-
-        @media (max-width: 768px) {
-            .navbar .container {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .navbar-menu {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ===== MOBILE RESPONSIVE STYLES ===== */
-
-        @media (max-width: 768px) {
-            /* Container */
-            .container {
-                padding: 0 0.75rem;
-            }
-            
-            /* Navigation */
-            .navbar .container {
-                flex-direction: column;
-                gap: 0.75rem;
-                padding: 0.75rem;
-            }
-            
-            .navbar-menu {
-                flex-wrap: wrap;
-                justify-content: center;
-                width: 100%;
-                gap: 0.5rem;
-            }
-            
-            .nav-link {
-                padding: 0.625rem 1rem;
-                font-size: 0.875rem;
-                min-height: 44px;
-                display: flex;
-                align-items: center;
-            }
-            
-            /* Page Header */
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-            
-            .page-header h1 {
-                font-size: 1.5rem;
-            }
-            
-            /* Stats Grid */
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 0.75rem;
-            }
-            
-            .stat-card {
-                padding: 1rem;
-            }
-            
-            .stat-value {
-                font-size: 1.25rem;
-            }
-            
-            /* Tables */
-            .table-container {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            .medicine-table {
-                min-width: 600px;
-            }
-            
-            .medicine-table th,
-            .medicine-table td {
-                padding: 0.625rem 0.5rem;
-                font-size: 0.8125rem;
-            }
-            
-            /* Forms */
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .form-control {
-                font-size: 16px; /* Prevents iOS zoom */
-            }
-            
-            /* Modal */
-            .modal-content {
-                width: 95%;
-                max-width: none;
-                margin: 1rem;
-            }
-            
-            .modal-header,
-            .modal-body {
-                padding: 1rem;
-            }
-            
-            /* Buttons */
-            .btn {
-                min-height: 44px;
-                padding: 0.75rem 1.25rem;
-            }
-            
-            .btn-icon {
-                font-size: 1.5rem;
-                padding: 0.5rem;
-                min-width: 44px;
-                min-height: 44px;
-            }
-            
-            .action-buttons {
-                gap: 0.75rem;
-            }
-            
-            /* Search */
-            .search-form {
-                flex-direction: column;
-            }
-            
-            .search-input {
-                width: 100%;
-            }
-        }
-
-        /* Extra small devices */
-        @media (max-width: 480px) {
-            /* Even smaller text */
-            body {
-                font-size: 13px;
-            }
-            
-            .page-header h1 {
-                font-size: 1.25rem;
-            }
-            
-            /* Stack table data */
-            .medicine-table {
-                min-width: 100%;
-            }
-            
-            .medicine-table thead {
-                display: none;
-            }
-            
-            .medicine-table tbody tr {
-                display: block;
-                margin-bottom: 1rem;
-                border: 1px solid var(--border-color);
-                border-radius: 0.5rem;
-                padding: 0.75rem;
-            }
-            
-            .medicine-table tbody td {
-                display: flex;
-                justify-content: space-between;
-                padding: 0.5rem 0;
-                border-bottom: 1px solid var(--border-color);
-            }
-            
-            .medicine-table tbody td:last-child {
-                border-bottom: none;
-            }
-            
-            .medicine-table tbody td:before {
-                content: attr(data-label);
-                font-weight: 600;
-                color: var(--text-secondary);
-            }
-            
-            /* Full width buttons */
-            .header-actions {
-                width: 100%;
-            }
-            
-            .header-actions .btn {
-                width: 100%;
-            }
-            
-            /* Modal full screen */
-            .modal-content {
-                width: 100%;
-                height: 100%;
-                max-height: 100vh;
-                border-radius: 0;
-                margin: 0;
-            }
-        }
-
-        /* Landscape mobile */
-        @media (max-width: 768px) and (orientation: landscape) {
-            .navbar .container {
-                flex-direction: row;
-            }
-            
-            .navbar-menu {
-                flex-direction: row;
-                flex-wrap: wrap;
-            }
-        }        
-    </style>
+    
+    <!-- Common CSS -->
+    <link rel="stylesheet" href="common.css">
 </head>
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="container">
             <div class="navbar-brand">
-                <a href="?page=dashboard" class="brand-link">
+                <a onclick="navigateTo('Dashboard.html')" class="brand-link">
                     <span class="brand-icon">💊</span>
                     <span class="brand-text">VetCare Plus</span>
                 </a>
             </div>
+            <button class="navbar-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation">
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
             <div class="navbar-menu">
-                <a href="?page=dashboard" class="nav-link">Dashboard</a>
-                <a href="?page=medicines" class="nav-link">Medicines</a>
-                <a href="?page=sales" class="nav-link active">Sales</a>
-                <a href="?page=vaccinations" class="nav-link">Vaccinations</a>
+                <a onclick="navigateTo('Dashboard.html')" class="nav-link">Dashboard</a>
+                <a onclick="navigateTo('Medicines.html')" class="nav-link">Medicines</a>
+                <a onclick="navigateTo('Sales.html')" class="nav-link active">Sales</a>
+                <a onclick="navigateTo('Vaccinations.html')" class="nav-link">Vaccinations</a>
                 <button onclick="handleLogout()" class="nav-link">Logout</button>
             </div>
         </div>
@@ -622,7 +76,7 @@
 
     <!-- Create Bill Modal -->
     <div id="billModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 900px;">
             <div class="modal-header">
                 <h2>Create New Bill</h2>
                 <button onclick="closeBillModal()" class="modal-close">&times;</button>
@@ -723,43 +177,43 @@
         </div>
     </footer>
 
+    <!-- Common Scripts -->
+    <script src="config.js"></script>
+    <script src="common.js"></script>
+    
     <script>
-        // Store the web app URL globally
-        var webAppUrl = '';
+        // Check authentication
+        checkAuthentication();
+
         let sales = [];
         let medicines = [];
         let cart = [];
         
-        // Get web app URL on page load
-        google.script.run
-            .withSuccessHandler(function(url) {
-                webAppUrl = url;
-                console.log('Web App URL:', webAppUrl);
-            })
-            .withFailureHandler(function(error) {
-                console.error('Error getting web app URL:', error);
-            })
-            .getWebAppUrl();
-        
         // Load medicines for dropdown
-        google.script.run
-            .withSuccessHandler(function(data) {
-                medicines = data;
-                populateMedicineDropdown();
-            })
-            .withFailureHandler(function(error) {
-                showError('Error loading medicines: ' + error.message);
-            })
-            .getAllMedicines();
+        loadMedicines();
         
         // Load sales on page load
         loadSales();
+        
+        async function loadMedicines() {
+            try {
+                const response = await callAPI('getAllMedicines');
+                if (response.success) {
+                    medicines = response.data;
+                    populateMedicineDropdown();
+                } else {
+                    showError('Error loading medicines: ' + response.message);
+                }
+            } catch (error) {
+                showError('Error loading medicines: ' + error.message);
+            }
+        }
         
         function populateMedicineDropdown() {
             const select = document.getElementById('medicineSelect');
             select.innerHTML = '<option value="">-- Select Medicine --</option>';
             medicines.forEach(medicine => {
-                select.innerHTML += `<option value="${medicine.id}">${medicine.name} - ₹${medicine.sellingPrice} (Stock: ${medicine.quantity})</option>`;
+                select.innerHTML += `<option value="${medicine.id}">${medicine.name} - ${formatCurrency(medicine.sellingPrice)} (Stock: ${medicine.quantity})</option>`;
             });
         }
         
@@ -819,9 +273,9 @@
                 return `
                     <tr>
                         <td>${item.name}</td>
-                        <td>₹${item.price.toFixed(2)}</td>
+                        <td>${formatCurrency(item.price)}</td>
                         <td>${item.quantity}</td>
-                        <td>₹${subtotal.toFixed(2)}</td>
+                        <td>${formatCurrency(subtotal)}</td>
                         <td>
                             <button onclick="removeFromCart(${index})" class="btn-icon" title="Remove">🗑️</button>
                         </td>
@@ -843,7 +297,7 @@
             document.getElementById('billModal').style.display = 'none';
         }
         
-        document.getElementById('billForm').addEventListener('submit', function(e) {
+        document.getElementById('billForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             if (cart.length === 0) {
@@ -854,38 +308,38 @@
             const saleData = {
                 customerName: document.getElementById('customerName').value,
                 customerPhone: document.getElementById('customerPhone').value,
-                items: cart,
+                items: JSON.stringify(cart),  // Stringify the cart array
                 totalAmount: parseFloat(document.getElementById('totalAmount').textContent),
                 paymentMethod: document.getElementById('paymentMethod').value,
                 notes: document.getElementById('notes').value
             };
             
-            google.script.run
-                .withSuccessHandler(function(response) {
-                    if (response.success) {
-                        showSuccess(response.message + ' - Bill #' + response.billNumber);
-                        closeBillModal();
-                        loadSales();
-                    } else {
-                        showError(response.message);
-                    }
-                })
-                .withFailureHandler(function(error) {
-                    showError('Error creating sale: ' + error.message);
-                })
-                .createSale(saleData);
+            try {
+                const response = await callAPI('createSale', saleData);
+                if (response.success) {
+                    showSuccess(response.message + ' - Bill #' + response.billNumber);
+                    closeBillModal();
+                    loadSales();
+                } else {
+                    showError(response.message);
+                }
+            } catch (error) {
+                showError('Error creating sale: ' + error.message);
+            }
         });
         
-        function loadSales() {
-            google.script.run
-                .withSuccessHandler(function(data) {
-                    sales = data;
-                    renderSalesTable(data);
-                })
-                .withFailureHandler(function(error) {
-                    showError('Error loading sales: ' + error.message);
-                })
-                .getAllSales();
+        async function loadSales() {
+            try {
+                const response = await callAPI('getAllSales');
+                if (response.success) {
+                    sales = response.data;
+                    renderSalesTable(response.data);
+                } else {
+                    showError('Error loading sales: ' + response.message);
+                }
+            } catch (error) {
+                showError('Error loading sales: ' + error.message);
+            }
         }
         
         function renderSalesTable(data) {
@@ -897,13 +351,13 @@
             
             tbody.innerHTML = data.map(sale => `
                 <tr>
-                    <td><strong>${sale.billNumber}</strong></td>
-                    <td>${sale.customerName || '-'}</td>
-                    <td>${sale.customerPhone || '-'}</td>
-                    <td>₹${sale.totalAmount.toFixed(2)}</td>
-                    <td><span class="badge-secondary">${sale.paymentMethod}</span></td>
-                    <td>${new Date(sale.createdAt).toLocaleDateString()}</td>
-                    <td class="action-buttons">
+                    <td data-label="Bill Number"><strong>${sale.billNumber}</strong></td>
+                    <td data-label="Customer">${sale.customerName || '-'}</td>
+                    <td data-label="Phone">${sale.customerPhone || '-'}</td>
+                    <td data-label="Amount">${formatCurrency(sale.totalAmount)}</td>
+                    <td data-label="Payment"><span class="badge-secondary">${sale.paymentMethod}</span></td>
+                    <td data-label="Date">${formatDate(sale.createdAt)}</td>
+                    <td data-label="Actions" class="action-buttons">
                         <button onclick="viewSale('${sale.id}')" class="btn-icon" title="View">👁️</button>
                     </td>
                 </tr>
@@ -915,66 +369,25 @@
             if (!sale) return;
             
             const itemsList = sale.items.map(item => 
-                `${item.name} x ${item.quantity} = ₹${(item.price * item.quantity).toFixed(2)}`
-            ).join('\n');
+                `<p>${item.name} x ${item.quantity} = ${formatCurrency(item.price * item.quantity)}</p>`
+            ).join('');
             
-            alert(`Bill Details:\n\nBill Number: ${sale.billNumber}\nCustomer: ${sale.customerName || 'Walk-in'}\nPhone: ${sale.customerPhone || '-'}\n\nItems:\n${itemsList}\n\nTotal: ₹${sale.totalAmount.toFixed(2)}\nPayment: ${sale.paymentMethod}\nDate: ${new Date(sale.createdAt).toLocaleString()}`);
+            const details = `
+                <div style="text-align: left;">
+                    <p><strong>Bill Number:</strong> ${sale.billNumber}</p>
+                    <p><strong>Customer:</strong> ${sale.customerName || 'Walk-in'}</p>
+                    <p><strong>Phone:</strong> ${sale.customerPhone || '-'}</p>
+                    <hr style="margin: 1rem 0;">
+                    <p><strong>Items:</strong></p>
+                    ${itemsList}
+                    <hr style="margin: 1rem 0;">
+                    <p><strong>Total:</strong> ${formatCurrency(sale.totalAmount)}</p>
+                    <p><strong>Payment:</strong> ${sale.paymentMethod}</p>
+                    <p><strong>Date:</strong> ${formatDateTime(sale.createdAt)}</p>
+                </div>
+            `;
+            showAlert(details, 'Bill Details', 'info');
         }
-        
-        function showSuccess(message) {
-            const el = document.getElementById('successMessage');
-            el.textContent = message;
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 5000);
-        }
-        
-        function showError(message) {
-            const el = document.getElementById('errorMessage');
-            el.textContent = message;
-            el.style.display = 'block';
-            setTimeout(() => el.style.display = 'none', 5000);
-        }
-        
-        // Navigation helper function
-        function navigateTo(page) {
-            if (webAppUrl) {
-                window.top.location.href = webAppUrl + '?page=' + page;
-            } else {
-                // Fallback to relative URL
-                window.top.location.href = '?page=' + page;
-            }
-        }
-        
-        function handleLogout() {
-            if (confirm('Are you sure you want to logout?')) {
-                google.script.run
-                    .withSuccessHandler(function() {
-                        navigateTo('login');
-                    })
-                    .logout();
-            }
-        }
-        
-        // Update all navigation links to use the navigateTo function
-        document.addEventListener('DOMContentLoaded', function() {
-            // Update all nav links
-            document.querySelectorAll('.nav-link[href^="?page="]').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    var page = this.getAttribute('href').replace('?page=', '');
-                    navigateTo(page);
-                });
-            });
-            
-            // Update brand link
-            document.querySelectorAll('.brand-link[href^="?page="]').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    var page = this.getAttribute('href').replace('?page=', '');
-                    navigateTo(page);
-                });
-            });
-        });
     </script>
 </body>
 </html>
